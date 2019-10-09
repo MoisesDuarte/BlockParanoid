@@ -23,6 +23,9 @@
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
+    "@capacitor/android": "^1.2.1",
+    "@capacitor/cli": "^1.2.1",
+    "@capacitor/core": "^1.2.1",
     "phaser": "^3.16.2"
   }
 }
