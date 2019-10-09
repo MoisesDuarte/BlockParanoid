@@ -4,7 +4,7 @@ import Phaser from "phaser";
 const config = {
   type: Phaser.AUTO,
   width: 400,
-  height: 450,
+  height: 550,
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH
@@ -24,8 +24,10 @@ const config = {
 const game = new Phaser.Game(config);
 
 // VARIAVEIS DO JOGO
-let palheta, bola, blocosVermelho, blocosAmarelo, blocosVerde, blocosAzul, blocosBranco, controleTeclado;
+let palheta, bola, blocosVermelho, blocosAmarelo, blocosVerde, blocosAzul, blocosBranco;
+let controleTeclado, controleToque;
 let pontuacao, labelPontuacao;
+let imgBotaoEsquerda, imgBotaoDireita;
 
 // RECURSOS
 import spritePalheta from "./assets/images/palheta.png";
@@ -35,6 +37,8 @@ import spriteBloco2 from "./assets/images/bloco2.png";
 import spriteBloco3 from "./assets/images/bloco3.png";
 import spriteBloco4 from "./assets/images/bloco4.png";
 import spriteBloco5 from "./assets/images/bloco5.png";
+import buttonEsquerda from "./assets/images/esquerda.png";
+import buttonDireita from "./assets/images/direita.png";
 
 // CENA PRINCIPAL
 function preload() {
@@ -45,6 +49,8 @@ function preload() {
   this.load.image('bloco3', spriteBloco3);
   this.load.image('bloco4', spriteBloco4);
   this.load.image('bloco5', spriteBloco5);
+  this.load.image('esquerda', buttonEsquerda);
+  this.load.image('direita', buttonDireita);
 };
 
 function create() {
@@ -53,7 +59,6 @@ function create() {
   pontuacao = 0;
   labelPontuacao = this.add.text(15, 20, "Score:0");
 
-  controleTeclado = this.input.keyboard.createCursorKeys();
   palheta = this.physics.add.sprite(260, 400, 'palheta');
   palheta.setImmovable(true);
   palheta.setCollideWorldBounds(true);
@@ -119,6 +124,26 @@ function create() {
     }
   });
 
+  // Controles
+  controleTeclado = this.input.keyboard.createCursorKeys();
+  controleToque = this.input.activePointer;
+  imgBotaoEsquerda = this.physics.add.sprite(50, 500, 'esquerda');
+  imgBotaoDireita = this.physics.add.sprite(350, 500, 'direita');
+
+  imgBotaoEsquerda.setInteractive().on('pointerover', function () {
+    controleTeclado['left'].isDown = true
+  });
+  imgBotaoEsquerda.setInteractive().on('pointerout', function () {
+    controleTeclado['left'].isDown = false
+  });
+
+  imgBotaoDireita.setInteractive().on('pointerover', function () {
+    controleTeclado['right'].isDown = true
+  });
+  imgBotaoDireita.setInteractive().on('pointerout', function () {
+    controleTeclado['right'].isDown = false
+  });
+
   this.physics.add.collider(bola, blocosVermelho, acertaBloco, null, this);
   this.physics.add.collider(bola, blocosAmarelo, acertaBloco, null, this);
   this.physics.add.collider(bola, blocosVerde, acertaBloco, null, this);
@@ -126,6 +151,7 @@ function create() {
   this.physics.add.collider(bola, blocosBranco, acertaBloco, null, this);
   this.physics.add.collider(bola, palheta, acertaPalheta, null, this);
   this.physics.world.checkCollision.down = false;
+  
 
 };
 
@@ -135,14 +161,14 @@ function update() {
     this.scene.restart();
   }
 
-  // Controle
   if (controleTeclado.left.isDown) {
     palheta.body.setVelocityX(-300);
   } else if (controleTeclado.right.isDown) {
     palheta.body.setVelocityX(300);
   } else {
     palheta.body.setVelocityX(0);
-  }
+  }  
+
 };
 
 // FUNÇÕES
@@ -170,4 +196,4 @@ function acertaPalheta(bola, jogador) {
   } else {
     bola.setVelocityX(novaVelocidadeX);
   }
-}
+};
