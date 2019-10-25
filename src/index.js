@@ -4,10 +4,9 @@ import Phaser from "phaser";
 const config = {
   type: Phaser.AUTO,
   width: 400,
-  height: 550,
+  height: 640,
   scale: {
-    mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH
+    autoCenter: Phaser.Scale.CENTER_VERTICALLY 
   },
   scene: {
     key: 'main',
@@ -24,7 +23,7 @@ const config = {
 const game = new Phaser.Game(config);
 
 // VARIAVEIS DO JOGO
-let palheta, bola, blocosVermelho, blocosAmarelo, blocosVerde, blocosAzul, blocosBranco;
+let palheta, bola, blocos1, blocos2, blocos3, blocos4, blocos5, blocos6, blocos7, blocos8;
 let controleTeclado, controleToque;
 let pontuacao, labelPontuacao;
 let imgBotaoEsquerda, imgBotaoDireita;
@@ -54,12 +53,15 @@ function preload() {
 };
 
 function create() {
+  window.addEventListener('resize', resize);
+  resize();
+
   this.cameras.main.setBackgroundColor('#312e2f');
 
   pontuacao = 0;
   labelPontuacao = this.add.text(15, 20, "Score:0");
 
-  palheta = this.physics.add.sprite(260, 400, 'palheta');
+  palheta = this.physics.add.sprite(game.scale.width, game.scale.height - 120, 'palheta');
   palheta.setImmovable(true);
   palheta.setCollideWorldBounds(true);
 
@@ -69,7 +71,7 @@ function create() {
   bola.setBounce(1);
   bola.setCollideWorldBounds(true);
 
-  blocosVermelho = this.physics.add.group({
+  blocos1 = this.physics.add.group({
     key: 'bloco1',
     repeat: 6,
     immovable: true,
@@ -80,7 +82,7 @@ function create() {
     }
   });
 
-  blocosAmarelo = this.physics.add.group({
+  blocos2 = this.physics.add.group({
     key: 'bloco2',
     repeat: 6,
     immovable: true,
@@ -91,7 +93,7 @@ function create() {
     }
   });
 
-  blocosVerde = this.physics.add.group({
+  blocos3 = this.physics.add.group({
     key: 'bloco3',
     repeat: 6,
     immovable: true,
@@ -102,7 +104,7 @@ function create() {
     }
   });
 
-  blocosAzul = this.physics.add.group({
+  blocos4 = this.physics.add.group({
     key: 'bloco4',
     repeat: 6,
     immovable: true,
@@ -113,7 +115,7 @@ function create() {
     }
   });
 
-  blocosBranco = this.physics.add.group({
+  blocos5 = this.physics.add.group({
     key: 'bloco5',
     repeat: 6,
     immovable: true,
@@ -124,11 +126,44 @@ function create() {
     }
   });
 
+  blocos6 = this.physics.add.group({
+    key: 'bloco1',
+    repeat: 6,
+    immovable: true,
+    setXY: {
+      x: 38,
+      y: 185,
+      stepX: 54
+    }
+  });
+
+  blocos7 = this.physics.add.group({
+    key: 'bloco2',
+    repeat: 6,
+    immovable: true,
+    setXY: {
+      x: 38,
+      y: 210,
+      stepX: 54
+    }
+  });
+
+  blocos8 = this.physics.add.group({
+    key: 'bloco3',
+    repeat: 6,
+    immovable: true,
+    setXY: {
+      x: 38,
+      y: 235,
+      stepX: 54
+    }
+  });
+
   // Controles
   controleTeclado = this.input.keyboard.createCursorKeys();
   controleToque = this.input.activePointer;
-  imgBotaoEsquerda = this.physics.add.sprite(50, 500, 'esquerda');
-  imgBotaoDireita = this.physics.add.sprite(350, 500, 'direita');
+  imgBotaoEsquerda = this.physics.add.sprite(50, game.scale.height - 50, 'esquerda');
+  imgBotaoDireita = this.physics.add.sprite(350, game.scale.height - 50, 'direita');
 
   imgBotaoEsquerda.setInteractive().on('pointerover', function () {
     controleTeclado['left'].isDown = true
@@ -144,11 +179,14 @@ function create() {
     controleTeclado['right'].isDown = false
   });
 
-  this.physics.add.collider(bola, blocosVermelho, acertaBloco, null, this);
-  this.physics.add.collider(bola, blocosAmarelo, acertaBloco, null, this);
-  this.physics.add.collider(bola, blocosVerde, acertaBloco, null, this);
-  this.physics.add.collider(bola, blocosAzul, acertaBloco, null, this);
-  this.physics.add.collider(bola, blocosBranco, acertaBloco, null, this);
+  this.physics.add.collider(bola, blocos1, acertaBloco, null, this);
+  this.physics.add.collider(bola, blocos2, acertaBloco, null, this);
+  this.physics.add.collider(bola, blocos3, acertaBloco, null, this);
+  this.physics.add.collider(bola, blocos4, acertaBloco, null, this);
+  this.physics.add.collider(bola, blocos5, acertaBloco, null, this);
+  this.physics.add.collider(bola, blocos6, acertaBloco, null, this);
+  this.physics.add.collider(bola, blocos7, acertaBloco, null, this);
+  this.physics.add.collider(bola, blocos8, acertaBloco, null, this);
   this.physics.add.collider(bola, palheta, acertaPalheta, null, this);
   this.physics.world.checkCollision.down = false;
   
@@ -158,6 +196,8 @@ function create() {
 function update() {
   // Estado do jogo
   if (checaGameOver(this.physics.world)) {
+    this.scene.restart();
+  } else if (checaJogoGanho()) {
     this.scene.restart();
   }
 
@@ -177,7 +217,7 @@ function checaGameOver(world) {
 }
 
 function checaJogoGanho() {
-  return blocosVermelho.countActive() + blocosAmarelo.countActive() + blocosVerde.countActive() + blocosAzul.countActive() + blocosBranco.countActive() === 0;
+  return blocos1.countActive() + blocos2.countActive() + blocos3.countActive() + blocos4.countActive() + blocos5.countActive() + blocos6.countActive() + blocos7.countActive() + blocos8.countActive() === 0;
 }
 
 function acertaBloco(bola, bloco) {
@@ -188,7 +228,7 @@ function acertaBloco(bola, bloco) {
 };
 
 function acertaPalheta(bola, jogador) {
-  bola.setVelocityY(bola.body.velocity.y - 5);
+  bola.setVelocityY(bola.body.velocity.y - 30);
 
   let novaVelocidadeX = Math.abs(bola.body.velocity.x) + 5;
   if (bola.x < palheta.x) {
@@ -197,3 +237,16 @@ function acertaPalheta(bola, jogador) {
     bola.setVelocityX(novaVelocidadeX);
   }
 };
+
+function resize() {
+  var canvas = game.canvas, width = window.innerWidth, height = window.innerHeight;
+  var wratio = width / height, ratio = canvas.width / canvas.height;
+
+  if (wratio < ratio) {
+    canvas.style.width = width + "px";
+    canvas.style.height = (width / ratio) + "px";
+  } else {
+    canvas.style.width = (height * ratio) + "px";
+    canvas.style.height = height + "px";
+  }
+}
