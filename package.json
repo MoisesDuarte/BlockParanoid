@@ -1,31 +1,34 @@
 {
-  "name": "block-paranoid",
-  "version": "1.0.0",
-  "description": "Phaser 3 Project",
-  "main": "src/index.js",
-  "scripts": {
-    "build": "webpack --config webpack/prod.js ",
-    "start": "webpack-dev-server --config webpack/base.js --open"
-  },
-  "author": "Moisés Duarte Junior",
-  "devDependencies": {
-    "@babel/core": "^7.2.2",
-    "@babel/preset-env": "^7.2.3",
-    "babel-loader": "^8.0.5",
-    "clean-webpack-plugin": "^1.0.0",
-    "file-loader": "^3.0.1",
-    "html-webpack-plugin": "^3.2.0",
-    "raw-loader": "^1.0.0",
-    "terser-webpack-plugin": "^1.2.1",
-    "webpack": "^4.28.3",
-    "webpack-cli": "^3.2.1",
-    "webpack-dev-server": "^3.1.14",
-    "webpack-merge": "^4.2.1"
-  },
-  "dependencies": {
-    "@capacitor/android": "^1.2.1",
-    "@capacitor/cli": "^1.2.1",
-    "@capacitor/core": "^1.2.1",
-    "phaser": "^3.16.2"
-  }
+	"name": "phaser3-parcel-template",
+	"version": "1.0.0",
+	"description": "A template project for Phaser3 using Parceljs",
+	"scripts": {
+		"start": "parcel src/index.html -p 8000",
+		"build": "parcel build src/index.html --out-dir dist",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "supertommy",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ourcade/phaser3-parcel-template.git"
+	},
+	"homepage": "https://github.com/ourcade/phaser3-parcel-template",
+	"devDependencies": {
+		"cssnano": "^4.1.10",
+		"minimist": ">=1.2.2",
+		"parcel-plugin-clean-easy": "^1.0.2",
+		"parcel-plugin-static-files-copy": "^2.2.1"
+	},
+	"dependencies": {
+		"assets": "^3.0.1",
+		"phaser": "^3.22.0"
+	},
+	"parcelCleanPaths": [
+		"dist"
+	],
+	"staticFiles": {
+		"staticPath": "public",
+		"watcherGlob": "**"
+	}
 }

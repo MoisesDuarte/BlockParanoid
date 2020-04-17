@@ -1,7 +1,0 @@
-{
-  "appId": "com.blockparanoid.unisepe",
-  "appName": "blockparanoid",
-  "bundledWebRuntime": false,
-  "npmClient": "npm",
-  "webDir": "dist"
-}

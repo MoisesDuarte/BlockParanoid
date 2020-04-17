@@ -6,7 +6,7 @@ const config = {
   width: 400,
   height: 640,
   scale: {
-    autoCenter: Phaser.Scale.CENTER_VERTICALLY 
+    autoCenter: Phaser.Scale.CENTER_BOTH 
   },
   scene: {
     key: 'main',
@@ -28,28 +28,17 @@ let controleTeclado, controleToque;
 let pontuacao, labelPontuacao;
 let imgBotaoEsquerda, imgBotaoDireita;
 
-// RECURSOS
-import spritePalheta from "./assets/images/palheta.png";
-import spriteBola from "./assets/images/bola.png";
-import spriteBloco1 from "./assets/images/bloco1.png";
-import spriteBloco2 from "./assets/images/bloco2.png";
-import spriteBloco3 from "./assets/images/bloco3.png";
-import spriteBloco4 from "./assets/images/bloco4.png";
-import spriteBloco5 from "./assets/images/bloco5.png";
-import buttonEsquerda from "./assets/images/esquerda.png";
-import buttonDireita from "./assets/images/direita.png";
-
 // CENA PRINCIPAL
 function preload() {
-  this.load.image('palheta', spritePalheta);
-  this.load.image('bola', spriteBola);
-  this.load.image('bloco1', spriteBloco1);
-  this.load.image('bloco2', spriteBloco2);
-  this.load.image('bloco3', spriteBloco3);
-  this.load.image('bloco4', spriteBloco4);
-  this.load.image('bloco5', spriteBloco5);
-  this.load.image('esquerda', buttonEsquerda);
-  this.load.image('direita', buttonDireita);
+  this.load.image('palheta', "assets/images/palheta.png");
+  this.load.image('bola', "assets/images/bola.png");
+  this.load.image('bloco1', "assets/images/bloco1.png");
+  this.load.image('bloco2', "assets/images/bloco2.png");
+  this.load.image('bloco3', "assets/images/bloco3.png");
+  this.load.image('bloco4', "assets/images/bloco4.png");
+  this.load.image('bloco5', "assets/images/bloco5.png");
+  this.load.image('esquerda', "assets/images/esquerda.png");
+  this.load.image('direita', "assets/images/direita.png");
 };
 
 function create() {
